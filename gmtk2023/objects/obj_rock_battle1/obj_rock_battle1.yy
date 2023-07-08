@@ -3,8 +3,8 @@
   "resourceVersion": "1.0",
   "name": "obj_rock_battle1",
   "spriteId": {
-    "name": "sp_rockblob1",
-    "path": "sprites/sp_rockblob1/sp_rockblob1.yy",
+    "name": "sp_rock1",
+    "path": "sprites/sp_rock1/sp_rock1.yy",
   },
   "solid": false,
   "visible": true,
@@ -40,7 +40,7 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Objects",
-    "path": "folders/Objects.yy",
+    "name": "obstacles",
+    "path": "folders/Objects/obstacles.yy",
   },
 }

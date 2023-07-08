@@ -1,13 +1,7 @@
 
 
 
-if nocollide>0 {
-	move_nocollide();
-}
-else {
-	movecollidebounce(place_solid_instage);
-}
-
+move_path(path);
 moveable_endstep();
 
 if !object_in_room() {

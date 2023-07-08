@@ -92,7 +92,7 @@
     "resourceType": "GMNineSliceData",
   },
   "parent": {
-    "name": "overworld",
-    "path": "folders/Sprites/overworld.yy",
+    "name": "ui",
+    "path": "folders/Sprites/ui.yy",
   },
 }

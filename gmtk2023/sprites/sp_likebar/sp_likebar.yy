@@ -28,7 +28,7 @@
   "gridX": 0,
   "gridY": 0,
   "frames": [
-    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"d0865961-0dae-486f-a3d7-8f83980fad76",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"9645ea67-0eb4-4123-8f22-4f9b0490c5a6",},
     {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"948e3756-75d2-4e72-8813-d899e08bd739",},
   ],
   "sequence": {
@@ -46,7 +46,7 @@
     "moments": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MomentsEventKeyframe>",},
     "tracks": [
       {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","spriteId":null,"keyframes":{"Keyframes":[
-            {"id":"c38d5955-88d2-4249-9b99-097bd056a8c4","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"d0865961-0dae-486f-a3d7-8f83980fad76","path":"sprites/sp_likebar/sp_likebar.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
+            {"id":"cc9c7f05-cb15-418b-9341-adb4985f0e36","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"9645ea67-0eb4-4123-8f22-4f9b0490c5a6","path":"sprites/sp_likebar/sp_likebar.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
             {"id":"c30c203b-1291-4a98-88e6-4a3c43311d2b","Key":1.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"948e3756-75d2-4e72-8813-d899e08bd739","path":"sprites/sp_likebar/sp_likebar.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
           ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"modifiers":[],},
     ],

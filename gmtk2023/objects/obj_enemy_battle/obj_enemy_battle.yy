@@ -3,8 +3,8 @@
   "resourceVersion": "1.0",
   "name": "obj_enemy_battle",
   "spriteId": {
-    "name": "sp_monster_evil",
-    "path": "sprites/sp_monster_evil/sp_monster_evil.yy",
+    "name": "sp_butterdog",
+    "path": "sprites/sp_butterdog/sp_butterdog.yy",
   },
   "solid": false,
   "visible": true,

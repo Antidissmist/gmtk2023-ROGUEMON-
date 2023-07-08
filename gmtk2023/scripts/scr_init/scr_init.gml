@@ -4,7 +4,9 @@
 global.vw_def = 640;
 global.vh_def = 360;
 global.guiscale = 4;
+global.textscale = 1;
 global.paused = false;
+global.button_hovered = false;
 #macro PAUSED global.paused
 #macro PLAYABLE (!PAUSED && !instance_exists(obj_transition))
 
@@ -85,8 +87,11 @@ function transition(rm) {
 function moveable_setup() {
 	hsp = 0;
 	vsp = 0;
+	spd = 0;
 	xprev = x;
 	yprev = y;
+	pathamt = 0;
+	nocollide = 0;
 }
 function moveable_endstep() {
 	xprev = x;
@@ -144,11 +149,14 @@ function movecollidebounce(func=place_solid) {
 			pl = instance_nearest(x,y,obj_rockbounce);
 		}
 		if pl!=noone {
-			var vel = point_distance(xprev,yprev,x,y);
-			var ang = pl.image_angle+90;
+			var velang = point_direction(xprev,yprev,x,y);
+			var perp = pl.image_angle;
+			
+			velang = perp+abs(angle_difference(perp,velang));
+			
 			//debugline(x,y,50,ang);
-			hsp = lengthdir_x(factor,ang);
-			vsp = lengthdir_y(factor,ang);
+			hsp = lengthdir_x(factor,velang);
+			vsp = lengthdir_y(factor,velang);
 			
 			x += hsp;
 			y += vsp;
@@ -163,5 +171,22 @@ function movecollidebounce(func=place_solid) {
 }
 
 
+function move_path(p) {
+	if !path_exists(p) {
+		return;
+	}
+	
+	
+	x = path_get_x(p,pathamt);
+	y = path_get_y(p,pathamt);
+	
+	
+	pathamt += spd/path_get_length(p);
+	
+	if pathamt>1 {
+		instance_destroy();
+	}
+	
+}
 
 

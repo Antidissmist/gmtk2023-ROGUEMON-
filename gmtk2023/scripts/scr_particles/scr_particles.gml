@@ -25,4 +25,15 @@ part_type_life(p,30,60);
 part_type_color1(p,c_yellow);
 part_type_alpha2(p,.5,0)
 
+var p = part_type_create();
+part_dust_beam = p;
+part_type_sprite(p,sp_pixel,false,false,true);
+part_type_size(p,1,1.5,0,0);
+part_type_orientation(p,0,360,0,0,0);
+part_type_direction(p,0,360,0,0);
+part_type_speed(p,.1,.5,0,0);
+part_type_life(p,30,60);
+part_type_color1(p,#FF6B02);
+part_type_alpha2(p,1,0);
+
 
