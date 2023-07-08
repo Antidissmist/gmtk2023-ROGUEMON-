@@ -1,0 +1,3 @@
+
+
+onclick = do_nothing;
