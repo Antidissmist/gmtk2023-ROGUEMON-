@@ -6,13 +6,14 @@ inst_ensure_single
 
 
 shake = 0;
-tboxshake = 0;
+reaction = "";
+
+turnseed = random_range(-9999,9999);
 
 _hpress = 0;
 _vpress = 0;
 
-speaktext = "bazinga!";
-
+commented = false;
 
 ps = part_system_create();
 ps_top = part_system_create();
@@ -21,7 +22,7 @@ part_system_automatic_draw(ps_top,false);
 
 bouncedata = {};
 
-turntime = 60*5;
+turntime = 60*2.5;
 turntimer = turntime;
 
 waiting = false;

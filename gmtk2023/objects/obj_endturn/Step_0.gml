@@ -1,6 +1,6 @@
 
 
-if GAMETURN==0 && PLAYABLE {
+if GAMETURN==0 && PLAYABLE && ATTACK_TYPE!=-1 {
 	var hover = position_meeting(mouse_x,mouse_y,id);
 	image_index = hover;
 	if hover {
@@ -13,5 +13,5 @@ if GAMETURN==0 && PLAYABLE {
 }
 else {
 	image_index = 0;
-	image_alpha = .5;
+	image_alpha = 0;
 }

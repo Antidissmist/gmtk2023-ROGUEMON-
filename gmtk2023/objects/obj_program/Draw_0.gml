@@ -25,6 +25,3 @@ with obj_leader_battle {
 }
 
 
-
-
-

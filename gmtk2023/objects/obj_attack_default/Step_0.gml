@@ -10,9 +10,14 @@ if faceangle {
 moveable_endstep();
 
 if !object_in_room() || (!ATTACK_BOUNCES && place_meeting(x,y,obj_obstacle_battle)) {
+	approval_adjust("miss");
 	instance_destroy();
 }
 
+if collision_circle(x,y,GRAZERAD,obj_monster_battle,true,false)!=noone {
+	approval_adjust("grazed");
+	obj_monster_battle.grazealph = 1;
+}
 
 var hit = hittable_place(,,from);
 if hit==from {

@@ -6,7 +6,7 @@ function draw_sort_y(yy=bbox_bottom) {
 	depth = -yy;
 }
 
-function draw_textbox(cx,cy,text,sc=1,tx,ty) {
+function draw_textbox(cx,cy,text,sc=1,tx,ty,alph=1) {
 	
 	
 	var w = dtext_width(text,sc)/2;
@@ -17,8 +17,9 @@ function draw_textbox(cx,cy,text,sc=1,tx,ty) {
 	
 	var pdir = point_direction(cx,cy,tx,ty);
 	var pdist = point_distance(cx,cy,tx,ty);
-	draw_sprite_ext(sp_textcone,0,tx,ty, pdist/64,.25, pdir+180,c_white,1);
+	draw_sprite_ext(sp_textcone,0,tx,ty, pdist/64,.25, pdir+180,c_white,alph);
 	
+	da(alph);
 	draw_roundrect_color_ext(
 	cx-w-b,
 	cy-h-b,
@@ -32,6 +33,7 @@ function draw_textbox(cx,cy,text,sc=1,tx,ty) {
 	dc(c_black);
 	dtext_centered(cx,cy,text,sc);
 	dc(c_white);
+	da(1);
 	
 	
 }
@@ -87,13 +89,33 @@ function draw_shadow(circleme=false) {
 }
 
 
-function draw_hpbar(xx,yy,percent) {
+function draw_hpbar(xx,yy,hp,maxhp,maxwid=5,sc=2) {
 	
-	var w = 20;
+	/*var w = 20;
 	var h = 3;
 	var col = #ff004d;
 	
-	draw_healthbar( xx-w,yy-h,xx+w,yy+h, percent*100,c_black, col,col, 0,true,true );
+	draw_healthbar( xx-w,yy-h,xx+w,yy+h, percent*100,c_black, col,col, 0,true,true );*/
+
+	var hspc = sprite_get_width(sp_healthpiece)*sc;
+	var vspc = sprite_get_height(sp_healthpiece)*sc;
+	
+	var w = hspc*maxwid;
+	var hbx = xx-w/2;
+	
+	var hx = 0;
+	var hy = yy;
+	for(var i=0; i<maxhp; i++) {
+		
+		
+		hx += hspc;
+		if i%maxwid==0 {
+			hx = 0;
+			hy -= vspc;
+		}
+		draw_sprite_ext(sp_healthpiece,i>=hp,hbx+hx+hspc/2,hy, sc,sc, 0,c_white,1);
+	}
+	
 }
 
 

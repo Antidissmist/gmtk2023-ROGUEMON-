@@ -5,14 +5,21 @@
 
 
 function actor_aim(inst=id) {
+	if ATTACK_TYPE==-1 {
+		obj_program.clearlines();
+		return;
+	}
 	with inst {
 		obj_program.clearlines();
 		method(id,global.attacks[$ ATTACK_TYPE].aim)(id);
 	}
 }
 function actor_attack(inst=id) {
+	if ATTACK_TYPE==-1 {
+		return;
+	}
 	with inst {
-		screenshake(2);
+		screenshake(screenshake_attack);
 		method(id,global.attacks[$ ATTACK_TYPE].attack)(id);
 	}
 }
@@ -47,6 +54,21 @@ function attack_aim_nochoice() {
 	aimangle = point_direction(x,y,tx,ty);
 }
 
+
+global.attack_choices = [
+	{name: "Piercing Beam", type: "beam", pierce: true, bounce: true},
+	{name: "Energy Beam", type:"beam", bounce: true},
+	{name: "Focus Hit", type:"aimed", bounce: true},
+	{name: "Energy Sphere", type:"mouse", bounce: true},
+	//{name: "Storm Blast", type:"circle"},
+	//{name: "Mirror Beam", type:"beamback", bounce: true},
+	{name: "Split Laser", type:"laserwave", pierce: true, bounce: true},
+	{name: "Curve Ball", type:"curveball"},
+	{name: "Triple Shot", type:"tripleshot"},
+	{name: "Scatter Bolt", type:"scatterbolt"},
+];
+
+
 global.attacks = {
 	aimed: {
 		
@@ -75,6 +97,59 @@ global.attacks = {
 	
 	},
 	
+	curveball: {
+		
+		aim: function(_id) {
+			attack_aim_choice();
+			array_push(obj_program.aimlines,field_raycast_path(x,y,aimangle,,_id,function(i,ang){
+				if i%5==0 {
+					return ang+2;
+				}
+				return ang;
+			}))
+		},
+		
+		attack: function(_id) {
+			fire_attack(x,y,obj_program.aimlines[0]);
+		},
+	
+	},
+	
+	scatterbolt: {
+		
+		aim: function(_id) {
+			attack_aim_choice();
+			array_push(obj_program.aimlines,field_raycast_path(x,y,aimangle,,_id,function(i,ang){
+				if i%10==0 {
+					random_set_seed(obj_program.turnseed+69+i);
+					var ret =  ang+random_range(-15,15);
+					//random_set_seed(random_get_seed()+1);
+					randomize();
+					return ret;
+				}
+				return ang;
+			}))
+		},
+		
+		attack: function(_id) {
+			fire_attack(x,y,obj_program.aimlines[0]);
+		},
+	
+	},
+	
+	tripleshot: {
+		
+		aim: function(_id) {
+			attack_aim_choice();
+			array_push(obj_program.aimlines,field_raycast_path(x,y,aimangle,,_id))
+		},
+		
+		attack: function(_id) {
+			fire_attack_repeated(x,y,obj_program.aimlines[0],,obj_attack_triple,_id,3,17);
+		},
+	
+	},
+	
 	
 	beam: {
 		
@@ -84,10 +159,7 @@ global.attacks = {
 		},
 		
 		attack: function(_id) {
-			var ts = time_source_create(time_source_game,1,time_source_units_frames,method(_id,function(){
-				fire_attack(x,y,obj_program.aimlines[0],6,obj_attack_beam);
-			}),[],LASER_SEGMENTS);
-			time_source_start(ts);
+			fire_attack_repeated(x,y,obj_program.aimlines[0],,obj_attack_beam,_id,LASER_SEGMENTS);
 		},
 	
 	},
@@ -101,10 +173,7 @@ global.attacks = {
 		},
 		
 		attack: function(_id) {
-			var ts = time_source_create(time_source_game,1,time_source_units_frames,method(_id,function(){
-				fire_attack(x,y,obj_program.aimlines[0],6,obj_attack_beam);
-			}),[],LASER_SEGMENTS);
-			time_source_start(ts);
+			fire_attack_repeated(x,y,obj_program.aimlines[0],,obj_attack_beam,_id,LASER_SEGMENTS);
 		},
 	
 	},
@@ -129,20 +198,14 @@ global.attacks = {
 	
 	laserwave: {
 		aim: function(_id) {
+			var ang = 8;
 			attack_aim_choice();
-			var ang = 30/4;
-			for(var i=-15; i<15; i+=ang;) {
-				array_push(obj_program.aimlines,field_raycast_path(x,y,aimangle+i,,_id));
-			}	
+			array_push(obj_program.aimlines,field_raycast_path(x,y,aimangle+ang,,_id));
+			array_push(obj_program.aimlines,field_raycast_path(x,y,aimangle-ang,,_id));
 		},
 		attack: function(_id) {
-			var len = alen(obj_program.aimlines);
-			for(var i=0; i<len; i++) {
-				var ts = time_source_create(time_source_game,1,time_source_units_frames,method(_id,function(i){
-					fire_attack(x,y,obj_program.aimlines[i],6,obj_attack_beam);
-				}),[i],LASER_SEGMENTS);
-				time_source_start(ts);
-			}	
+			fire_attack_repeated(x,y,obj_program.aimlines[0],,obj_attack_beam,_id,LASER_SEGMENTS);
+			fire_attack_repeated(x,y,obj_program.aimlines[1],,obj_attack_beam,_id,LASER_SEGMENTS);
 		},
 	},
 	
@@ -152,7 +215,46 @@ global.attacks = {
 #endregion
 
 
+#region reactions
 
+global.reactions = {
+	hitleader: [//--
+		"ow!",
+		"hey!",
+		"ouch!!",
+		"yow!",
+	],
+	
+	hitenemy: [//++
+		"yes!",
+		"yeah!",
+		"haha!",
+	],
+	
+	defymove: [//--
+		"huh?",
+		"hey!",
+		"what??",
+	],
+	
+	grazed: [
+		"ooh!",
+		"close one!",
+		"near miss!",
+		"wow!",
+	],
+	
+	miss: [ //--
+		"miss!",
+		"bad shot!",
+		"miss!?",
+		"not good enough!",
+	],
+
+};
+
+
+#endregion
 
 function fire_attack(xf,yf,path,spd=1,obj=obj_attack,from=id) {
 	var b = instance_create_depth(xf,yf,0,obj);
@@ -163,12 +265,19 @@ function fire_attack(xf,yf,path,spd=1,obj=obj_attack,from=id) {
 	
 	return b;
 }
+function fire_attack_repeated(xf,yf,path,spd=1,obj=obj_attack,from=id,reps=LASER_SEGMENTS,period=1) {
+	var ts = time_source_create(time_source_game,period,time_source_units_frames,method(from,function(xf,yf,path,spd,obj,from){
+		fire_attack(xf,yf,path,spd,obj,from);
+	}),[xf,yf,path,spd,obj,from],reps);
+	time_source_start(ts);
+}
 
 
 
 function hittable_setup() {
 	onhit = do_nothing; //(dmg)
-	get_healthpercent = return_true;
+	get_health = return_true;
+	get_maxhealth = return_true;
 	
 	xsc = 1;
 	ysc = 1;
@@ -255,7 +364,7 @@ function hittable_position(xx=x,yy=y,exclude=noone,rad=2) {
 function collision_bouncecheck(px,py,obj) {
 	return collision_point(px,py,obj,true,false);
 }
-function field_raycast_path(startx,starty,startang,projrad=2,from=noone) {
+function field_raycast_path(startx,starty,startang,projrad=2,from=noone,stepfunc=-1) {
 	
 	
 	var maxsteps = room_width*6;
@@ -277,6 +386,7 @@ function field_raycast_path(startx,starty,startang,projrad=2,from=noone) {
 		}
 	
 		
+		var bounced = false;
 		if ATTACK_BOUNCES && collision_circle(px,py,projrad,obj_obstacle_battle,true,false)!=noone {
 			var pl = collision_bouncecheck(px,py,obj_rockbounce);
 			/*if pl==noone {
@@ -294,9 +404,22 @@ function field_raycast_path(startx,starty,startang,projrad=2,from=noone) {
 				
 				hsp = lengthdir_x(stepsize,velang);
 				vsp = lengthdir_y(stepsize,velang);
+				bounced = true;
 			}
 		}
 		
+		
+		if !bounced {
+			if stepfunc!=-1 {
+				var pang = velang;
+				velang = stepfunc(i,velang);
+				if pang!=velang {
+					path_add_point(pt,px,py,1);
+					hsp = lengthdir_x(stepsize,velang);
+					vsp = lengthdir_y(stepsize,velang);
+				}
+			}
+		}
 		
 		var hit = hittable_position(px,py,from,projrad);
 		if hit==from {

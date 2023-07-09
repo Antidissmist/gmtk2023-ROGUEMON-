@@ -16,6 +16,9 @@ function battle_endturn() {
 	//player attack
 	if GAMETURN==0 {
 		with obj_monster_battle {
+			if ATTACK_TYPENAME!=ATTACK_TOLDNAME {
+				approval_adjust("defymove");
+			}
 			actor_attack();
 		}
 	}
@@ -30,7 +33,9 @@ function battle_endturn() {
 		waiting = true;
 		waitcheck = waitchecktime;
 		turntimer = turntime;
+		commented = false;
 	}
+	
 }
 function side_aim() {
 	if GAMETURN==0 {
@@ -45,6 +50,11 @@ function side_aim() {
 	}
 }
 function battle_turnstart() {
+	
+	if APPROVAL>=APPROVAL_MAX {
+		PLAYERSTATS.monsterhp = min(PLAYERSTATS.monsterhp+1,MONSTERHP_MAX);
+		APPROVAL = APPROVAL_MAX/2;
+	}
 	
 	if PLAYERSTATS.leaderhp<=0 {
 		transition_cutscene(sp_scene_win);
@@ -65,28 +75,25 @@ function battle_turnstart() {
 		return;
 	}
 	
-	
+	THINGSDONE = {};
 	
 	with obj_program {
 		turntimer = turntime;
+		reaction = "";
 		
+		var choice = array_random(global.attack_choices);
 		
-		var choices = [
-			{name: "Piercing Beam", type: "beam", pierce: true},
-			{name: "Energy Beam", type:"beam", bounce: true},
-			{name: "Focus Hit", type:"aimed", bounce: true},
-			{name: "Energy Sphere", type:"mouse", bounce: true},
-			{name: "Storm Blast", type:"circle"},
-			//{name: "Mirror Beam", type:"beamback", bounce: true},
-			{name: "Laser Wave", type:"laserwave", pierce: true},
-		];
-		var choice = array_random(choices);
+		textbox_battle("use "+choice.name+"!");
+		ATTACK_TYPE = -1;
+		ATTACK_TYPENAME = -1;
+		ATTACK_TOLD = choice.type;
+		ATTACK_TOLDNAME = choice.name;
+		if GAMETURN==1 {
+			ATTACK_TYPE = ATTACK_TOLD;
+			ATTACK_TYPENAME = ATTACK_TOLDNAME;
+		}
 		
-		speaktext = "use "+choice.name+"!";
-		ATTACK_PIERCES = struct_get(choice,"pierce",false);
-		ATTACK_BOUNCES = struct_get(choice,"bounce",false);
-		ATTACK_TYPE = choice.type;
-		tboxshake = 12;
+		turnseed = random_range(-9999,9999);
 		
 	}
 	
@@ -96,15 +103,21 @@ function battle_turnstart() {
 		active = false;
 	}
 	if GAMETURN==0 {
-		var options = 3;
+		var options = 2;
 		
 		var list = instplace_list;
 		ds_list_clear(list);
 		with obj_menuoption {
-			ds_list_add(list,id);
+			if drawname!=ATTACK_TOLDNAME {
+				ds_list_add(list,id);
+			}
+			else {
+				active = true;
+			}
 		}
-		ds_list_shuffle(list);
 		
+		//choose random ones
+		ds_list_shuffle(list);
 		for(var i=0; i<options; i++) {
 			with list[| i] {
 				active = true;

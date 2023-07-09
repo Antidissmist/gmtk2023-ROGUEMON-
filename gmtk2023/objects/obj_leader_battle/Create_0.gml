@@ -6,7 +6,8 @@ hittable_setup();
 
 onhit = function(dmg) {
 	PLAYERSTATS.leaderhp -= dmg;
-	approval_adjust(approval_hitleader,dmg);
+	approval_adjust("hitleader");
+	
 	if PLAYERSTATS.leaderhp <= 0 {
 		battle_leader_dies();
 	}
@@ -14,6 +15,9 @@ onhit = function(dmg) {
 
 
 
-get_healthpercent = function() {
-	return PLAYERSTATS.leaderhp/LEADERHP_MAX
+get_health = function() {
+	return PLAYERSTATS.leaderhp
+}
+get_maxhealth = function() {
+	return LEADERHP_MAX
 }

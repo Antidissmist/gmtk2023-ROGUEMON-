@@ -18,29 +18,42 @@ if room==rm_battle {
 	
 	
 	if waiting {
-		if waitcheck<=0 {
+		if waitcheck<=-30 {
 			if !instance_exists(obj_attack_default) {
-				waiting = false;
-				waitcheck = waitchecktime;
-				battle_turnstart();
+				if !commented {
+					approval_apply();
+					commented = true;
+				}
+				else {
+					if !instance_exists(obj_attack_default) && !instance_exists(obj_textbox_battle) {
+						waiting = false;
+						waitcheck = waitchecktime;
+						battle_turnstart();
+					}
+				}
 			}
 		}
 		else {
 			waitcheck--
+			if waitcheck==0 {
+				if reaction!="" {
+					textbox_battle(reaction,0,90);
+				}
+			}
 		}
 	}
 	else {
 		
-		//if GAMETURN==1 {
+		if GAMETURN==1 {
 			turntimer--
 			if turntimer<=0 {
 				battle_endturn();
 			}
-		//}
+		}
 		
 		PLAYERSTATS.battletimer++
 		if GAMETURN==0 {
-			approval_adjust(approval_impatience);
+			//approval_adjust(approval_impatience);
 		}
 		
 	}
@@ -48,6 +61,5 @@ if room==rm_battle {
 }
 
 shake = lerp(shake,0,.2);
-tboxshake = lerp(tboxshake,0,.2);
 
 

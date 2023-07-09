@@ -4,7 +4,7 @@
   "name": "obj_textbox",
   "spriteId": null,
   "solid": false,
-  "visible": true,
+  "visible": false,
   "managed": true,
   "spriteMaskId": null,
   "persistent": false,

@@ -2,6 +2,7 @@
 
 
 walkspeed = 1.5;
+grazealph = 1;
 
 moveable_setup();
 hittable_setup();
@@ -12,8 +13,11 @@ onhit = function(dmg) {
 		battle_monster_dies();
 	}
 }
-get_healthpercent = function() {
-	return PLAYERSTATS.monsterhp/MONSTERHP_MAX
+get_health = function() {
+	return PLAYERSTATS.monsterhp
+}
+get_maxhealth = function() {
+	return MONSTERHP_MAX;
 }
 
 

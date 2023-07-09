@@ -11,16 +11,19 @@ myhealth = maxhealth;
 onhit = function(dmg) {
 	myhealth -= dmg;
 	if myhealth <= 0 {
-		approval_adjust(approval_killenemy);
+		approval_adjust("killenemy");
 		battle_enemy_dies();
 	}
 	else {
-		approval_adjust(approval_hitenemy,dmg);
+		approval_adjust("hitenemy",dmg);
 	}
 }
 
-get_healthpercent = function() {
-	return myhealth/maxhealth
+get_health = function() {
+	return myhealth
+}
+get_maxhealth = function() {
+	return ENEMYHP_MAX
 }
 
 

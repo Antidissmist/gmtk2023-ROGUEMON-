@@ -2,8 +2,8 @@
 
 
 global.debug = true;//
-global.skiptitle = false;//
-#macro STARTROOM rm_over1//
+global.skiptitle = true;//
+#macro STARTROOM rm_battle//rm_over1//
 
 global.vw_def = 640;
 global.vh_def = 360;
@@ -18,18 +18,20 @@ global.button_hovered = false;
 
 #macro depth_ui (-(global.vh_def+50))
 
-#macro APPROVAL_MAX 50
+
+#macro approval_defymove -1
 #macro approval_hitenemy 1
-#macro approval_killenemy 5
+#macro approval_killenemy 1
 #macro approval_hitleader -1
 #macro approval_impatience -1/400
 
-
 #macro LASER_SEGMENTS 30
-#macro LEADERHP_MAX 10
-#macro MONSTERHP_MAX 10
+#macro GRAZERAD 40
 
-#macro ENEMYHP_MAX 10
+#macro APPROVAL_MAX 6
+#macro LEADERHP_MAX 20
+#macro MONSTERHP_MAX 4
+#macro ENEMYHP_MAX 4
 
 function init() {
 	
@@ -48,9 +50,14 @@ function init() {
 		battletimer: 0,
 		gameturn: 0,
 		
-		attacktype: "aimed",
+		attacktold: -1,
+		attacktoldname: "",
+		attacktype: -1,
+		attacktypename: "",
 		piercing: false,
 		bouncing: false,
+		
+		thingsdone: {},
 	};
 	
 	
@@ -65,6 +72,9 @@ function battle_start() {
 	obj_program.waitcheck = 90;
 	//battle_turnstart();
 	
+	
+	textbox_battle("Go, froglizard!",0,90)
+	
 }
 #macro GAMETURN PLAYERSTATS.gameturn
 #macro PLAYERSTATS global.playerstats
@@ -72,18 +82,55 @@ function battle_start() {
 #macro ATTACK_PIERCES PLAYERSTATS.piercing
 #macro ATTACK_BOUNCES PLAYERSTATS.bouncing
 #macro ATTACK_TYPE PLAYERSTATS.attacktype
+#macro ATTACK_TYPENAME PLAYERSTATS.attacktypename
+#macro ATTACK_TOLD PLAYERSTATS.attacktold
+#macro ATTACK_TOLDNAME PLAYERSTATS.attacktoldname
+#macro THINGSDONE PLAYERSTATS.thingsdone
+
+#macro screenshake_attack 5
 
 
+function react(str) {
+	//obj_program.reaction = str;
+	textbox_battle(str,0,60)
+}
 
-function approval_adjust(amt,factor=1) {
+function approval_adjust(name) {
+
+	THINGSDONE[$ name] = true;
 	
-	amt *= factor;
+}
+function approval_apply() {
 	
-	APPROVAL += amt;
 	
-	if amt<=1 {
-		//obj_approvalbar.shake(abs(amt));
+	var hitleader = struct_get(THINGSDONE,"hitleader",false);
+	var killenemy = struct_get(THINGSDONE,"killenemy",false);
+	var hitenemy = struct_get(THINGSDONE,"hitenemy",false);
+	var defymove = struct_get(THINGSDONE,"defymove",false);
+	var grazed = struct_get(THINGSDONE,"grazed",false);
+	var miss = struct_get(THINGSDONE,"miss",false);
+	
+	if defymove {
+		APPROVAL--
+		react(array_random(global.reactions.defymove));
 	}
+	else {
+		if hitenemy || killenemy {
+			APPROVAL++
+			react(array_random(global.reactions.hitenemy));
+		}
+		else if miss {
+			APPROVAL--
+			react(array_random(global.reactions.miss));
+		}
+		else if hitleader {
+			APPROVAL--
+			react(array_random(global.reactions.hitleader));
+		}
+	}
+	
+	THINGSDONE = {};
+	
 }
 
 #macro KEY_LEFT (keyboard_check(vk_left) || keyboard_check(ord("A")))
@@ -114,6 +161,7 @@ function dblog() {
 #macro gh (vh*global.guiscale)
 
 #macro mouse_l_pr (mouse_check_button_pressed(mb_left) && PLAYABLE)
+#macro mouse_l (mouse_check_button(mb_left) && PLAYABLE)
 
 #macro inst_ensure_single if instance_number(object_index)>1 { instance_destroy(); exit; }
 #macro bbox_width (bbox_right-bbox_left)
@@ -128,6 +176,9 @@ function dblog() {
 global._instplacelist = ds_list_create(); //lol
 #macro instplace_list global._instplacelist
 
+function textbox_battle(text,side=GAMETURN,lifetimer=120) {
+	return instance_create_depth(0,0,0,obj_textbox_battle,{ text: text, side: side, lifetimer: lifetimer });
+}
 
 function transition(rm,onhalf=do_nothing) {
 	if instance_exists(obj_transition) {
@@ -151,8 +202,9 @@ function fxobj_create(xx,yy,spr,dep=0,sc=1,reps=1) {
 	});
 }
 
+
 function screenshake(amt=1) {
-	obj_program.shake = max(obj_program.shake,1);
+	obj_program.shake = max(obj_program.shake,amt);
 }
 
 

@@ -1,7 +1,8 @@
 
 
 draw_sort_y();
-log(GAMETURN,obj_program.waiting)
+
+/*
 var canwalk = GAMETURN==1// || (GAMETURN==0 && obj_program.waiting);
 with obj_movenow {
 	image_index = !canwalk;
@@ -13,7 +14,13 @@ if canwalk {
 else {
 	hsp = 0;
 	vsp = 0;
+}*/
+
+if PRESSABLE {
+	hsp = hpress*walkspeed;
+	vsp = vpress*walkspeed;
 }
+
 
 
 movecollide();
@@ -26,12 +33,11 @@ if x!=xprev || y!=yprev {
 //aimlock = GAMETURN==1 || !PLAYABLE;
 if GAMETURN==0 && PLAYABLE {
 	
-	if !global.button_hovered /*&& mouse_l_pr*/ {
+	if !global.button_hovered && mouse_l {
 		aimx = mouse_x;
 		aimy = mouse_y;
 		actor_aim();
 	}
 }
-
 
 moveable_endstep();

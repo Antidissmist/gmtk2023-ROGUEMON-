@@ -25,16 +25,30 @@ with obj_enemy_battle {
 with obj_program {
 	part_system_drawit(ps_top);
 	
-	//if GAMETURN==1 {
+	if GAMETURN==1 {
 		dtext(vw-130,15,"turn time: "+framestotime(turntimer),1);
-	//}
+	}
+	
+	
+	var i=1;
+	var isc = 1;
+	var spc = 16;
+	var ix = 10;
+	var iy = vh-8;
+	
+	if ATTACK_BOUNCES {
+		dtext(ix,iy-i++*spc, "bounces", isc);
+	}
+	if ATTACK_PIERCES {
+		dtext(ix,iy-i++*spc, "pierces", isc);
+	}
 	
 }
 
 
 with obj_hittable {
 	var yoff = sprite_get_yoffset(sprite_index);
-	draw_hpbar(bbox_midx,y-yoff-20,get_healthpercent());
+	draw_hpbar(bbox_midx,y-yoff-15,get_health(),get_maxhealth());
 }
 
 

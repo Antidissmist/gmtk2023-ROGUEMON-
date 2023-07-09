@@ -7,7 +7,7 @@
     "path": "sprites/sp_movenow/sp_movenow.yy",
   },
   "solid": false,
-  "visible": true,
+  "visible": false,
   "managed": true,
   "spriteMaskId": null,
   "persistent": false,
