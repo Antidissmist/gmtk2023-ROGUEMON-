@@ -20,7 +20,13 @@ if state==0 {
 }
 else if PRESSABLE {
 	
+	var _xprev = x;
+	var _yprev = y;
 	var res = mp_potential_step_object(targx,targy,.75,obj_solid);
+	if place_meeting(x,y,obj_solid_stagewall) {
+		x = _xprev;
+		y = _yprev;
+	}
 	checktimer++
 	if checktimer>90 || res {
 		state = 0;

@@ -12,6 +12,7 @@ if room==rm_over1 {
 		flshake = 50;
 		var s = sign(hpress);
 		flxsc = s==0 ? flxsc : s;
+		sfx_play(snd_slam,false,1,.2);
 	}
 	var flind = 1;
 	if presstime>0 {

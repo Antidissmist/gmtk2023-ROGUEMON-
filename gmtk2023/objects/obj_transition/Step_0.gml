@@ -5,7 +5,7 @@
 
 if !finished {
 	if stage==0 {
-		timer++
+		timer += spdfac;
 		if timer>maxtime {
 			onhalfway();
 			if goesto!=-1 {

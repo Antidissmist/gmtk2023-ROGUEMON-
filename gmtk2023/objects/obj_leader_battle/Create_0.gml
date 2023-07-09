@@ -6,7 +6,12 @@ hittable_setup();
 
 onhit = function(dmg) {
 	PLAYERSTATS.leaderhp -= dmg;
-	approval_adjust("hitleader");
+	
+	//if GAMETURN==0 {
+		approval_adjust("hitleader");
+		notice("trainer hit","approval down",c_red);
+		
+	//}
 	
 	if PLAYERSTATS.leaderhp <= 0 {
 		battle_leader_dies();

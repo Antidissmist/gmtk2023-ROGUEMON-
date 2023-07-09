@@ -1,9 +1,9 @@
 
 
 
-global.debug = true;//
-global.skiptitle = true;//
-#macro STARTROOM rm_battle//rm_over1//
+global.debug = false;//
+global.skiptitle = false;//
+#macro STARTROOM rm_over1//rm_over1//
 
 global.vw_def = 640;
 global.vh_def = 360;
@@ -29,7 +29,7 @@ global.button_hovered = false;
 #macro GRAZERAD 40
 
 #macro APPROVAL_MAX 6
-#macro LEADERHP_MAX 20
+#macro LEADERHP_MAX 15
 #macro MONSTERHP_MAX 4
 function enemyhp_get() {
 	switch (global.battle_difficulty) {
@@ -46,6 +46,8 @@ function init() {
 	
 	draw_set_font(fnt_default);
 	
+	global.music = -1;
+	global.overworld_mustime = 0;
 	
 	global.battle_difficulty = 1;
 	global.overworld_x = undefined;
@@ -79,6 +81,8 @@ function battle_start() {
 	PLAYERSTATS.battletimer = 0;
 	GAMETURN = 0;
 	PLAYERSTATS.monsterhp = MONSTERHP_MAX;
+	//PLAYERSTATS.monsterhp = min(MONSTERHP_MAX);
+	
 	
 	obj_program.waiting = true;
 	obj_program.waitcheck = 90;
@@ -114,6 +118,7 @@ function approval_adjust(name) {
 }
 function approval_apply() {
 	
+	var aprev = APPROVAL;
 	
 	var hitleader = struct_get(THINGSDONE,"hitleader",false);
 	var killenemy = struct_get(THINGSDONE,"killenemy",false);
@@ -122,23 +127,37 @@ function approval_apply() {
 	var grazed = struct_get(THINGSDONE,"grazed",false);
 	var miss = struct_get(THINGSDONE,"miss",false);
 	
+	log(THINGSDONE)
+	
+	var snd = -1;
 	if defymove {
 		APPROVAL--
 		react(array_random(global.reactions.defymove));
+		snd = snd_bardown;
 	}
 	else {
 		if hitenemy || killenemy {
 			APPROVAL++
 			react(array_random(global.reactions.hitenemy));
+			snd = snd_barup;
 		}
 		else if miss {
 			APPROVAL--
 			react(array_random(global.reactions.miss));
+			snd = snd_bardown;
 		}
 		else if hitleader {
 			APPROVAL--
 			react(array_random(global.reactions.hitleader));
+			snd = snd_bardown;
 		}
+	}
+	
+	if APPROVAL!=aprev {
+		if snd!=-1 {
+			sfx_play(snd,,1);
+		}
+		obj_approvalbar.shake(10);
 	}
 	
 	THINGSDONE = {};
@@ -146,12 +165,12 @@ function approval_apply() {
 }
 
 #macro current_frame obj_program.curframe
-#macro KEY_LEFT (keyboard_check(vk_left) || keyboard_check(ord("A")))
-#macro KEY_LEFT_PRESSED (keyboard_check_pressed(vk_left) || keyboard_check_pressed(ord("A")))
-#macro KEY_RIGHT (keyboard_check(vk_right) || keyboard_check(ord("D")))
-#macro KEY_RIGHT_PRESSED (keyboard_check_pressed(vk_right) || keyboard_check_pressed(ord("D")))
-#macro KEY_UP (keyboard_check(vk_up) || keyboard_check(ord("W")))
-#macro KEY_DOWN (keyboard_check(vk_down) || keyboard_check(ord("S")))
+#macro KEY_LEFT (/*keyboard_check(vk_left) ||*/ keyboard_check(ord("A")))
+#macro KEY_LEFT_PRESSED (/*keyboard_check_pressed(vk_left) ||*/ keyboard_check_pressed(ord("A")))
+#macro KEY_RIGHT (/*keyboard_check(vk_right) ||*/ keyboard_check(ord("D")))
+#macro KEY_RIGHT_PRESSED (/*keyboard_check_pressed(vk_right) ||*/ keyboard_check_pressed(ord("D")))
+#macro KEY_UP (/*keyboard_check(vk_up) ||*/ keyboard_check(ord("W")))
+#macro KEY_DOWN (/*keyboard_check(vk_down) ||*/ keyboard_check(ord("S")))
 #macro hpress obj_program._hpress
 #macro hpresspressed obj_program._hpresspressed
 #macro vpress obj_program._vpress
@@ -196,12 +215,31 @@ function textbox_battle(text,side=GAMETURN,lifetimer=120) {
 	return instance_create_depth(0,0,0,obj_textbox_battle,{ text: text, side: side, lifetimer: lifetimer });
 }
 
-function transition(rm,onhalf=do_nothing) {
+function notice(_text,text2,col) {
+	with obj_notice {
+		if text==_text {
+			return;
+		}
+	}
+	var n = instance_create_depth(0,instance_number(obj_notice)*30,depth_ui,obj_notice);
+	n.text = _text;
+	n.text2 = text2;
+	n.col = col;
+	return n;
+}
+
+function transition(rm,onhalf=do_nothing,spdfac=1) {
 	if instance_exists(obj_transition) {
 		return noone;
 	}
 	var t = instance_create_depth(0,0,0,obj_transition,{ goesto: rm });
 	t.onhalfway = onhalf;
+	t.spdfac = spdfac;
+	
+	if rm==rm_battle {
+		music_stop();
+		sfx_play(mus_battlestart,false);
+	}
 	return t;
 }
 function transition_cutscene(spr,onfin=-1) {

@@ -5,7 +5,7 @@
 maxtime = 30;
 timer = maxtime*startperc;
 
-
+spdfac = 1;
 
 onhalfway = do_nothing;
 onfinish = do_nothing;

@@ -30,8 +30,13 @@ if PRESSABLE {
 	else if sprite_index==sp_froglizard_run {
 		sprite_index = sp_froglizard;
 	}
-	
-	if collision_circle(bbox_midx,bbox_bottom,QUICKATTACKRANGE,obj_enemy_battle,true,false)!=noone {
+	var hpt = PLAYABLE;
+	with obj_enemy_battle {
+		if myhealth<=0 {
+			hpt = false;
+		}
+	}
+	if collision_circle(bbox_midx,bbox_bottom,QUICKATTACKRANGE,obj_enemy_battle,true,false)!=noone && hpt {
 		quickattacktimer++
 		if quickattacktimer>QUICKATTACKTIME {
 			textbox_battle("use Quick Strike!", 1,60);

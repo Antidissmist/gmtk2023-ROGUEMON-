@@ -19,10 +19,16 @@ onhit = function(dmg) {
 	myhealth -= dmg;
 	if myhealth <= 0 {
 		approval_adjust("killenemy");
+		if !struct_get(THINGSDONE,"defymove",false) {
+			notice("defeated enemy","approval up",c_lime);
+		}
 		battle_enemy_dies();
 	}
 	else {
 		approval_adjust("hitenemy",dmg);
+		if !struct_get(THINGSDONE,"defymove",false) {
+			notice("hit enemy","approval up",c_lime);
+		}
 	}
 }
 

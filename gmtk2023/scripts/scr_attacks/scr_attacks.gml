@@ -84,6 +84,7 @@ global.attacks = {
 		
 		attack: function(_id) {
 			fire_attack(x,y,obj_program.aimlines[0]);
+			sfx_play(snd_shoot3,,,.2);
 		},
 	
 	},
@@ -98,6 +99,7 @@ global.attacks = {
 		
 		attack: function(_id) {
 			fire_attack(x,y,obj_program.aimlines[0]);
+			sfx_play(snd_shoot3,,,.2);
 		},
 	
 	},
@@ -108,7 +110,7 @@ global.attacks = {
 			attack_aim_choice();
 			array_push(obj_program.aimlines,field_raycast_path(x,y,aimangle-45,,_id,function(i,ang){
 				if i%5==0 {
-					return ang+2;
+					return ang+1;
 				}
 				return ang;
 			}))
@@ -116,6 +118,7 @@ global.attacks = {
 		
 		attack: function(_id) {
 			fire_attack(x,y,obj_program.aimlines[0]);
+			sfx_play(snd_shoot3,,,.2);
 		},
 	
 	},
@@ -138,6 +141,7 @@ global.attacks = {
 		
 		attack: function(_id) {
 			fire_attack(x,y,obj_program.aimlines[0]);
+			sfx_play(snd_shoot3,,,.2);
 		},
 	
 	},
@@ -157,6 +161,7 @@ global.attacks = {
 		
 		attack: function(_id) {
 			fire_attack_repeated(x,y,obj_program.aimlines[0],,obj_attack_beam,_id,LASER_SEGMENTS);
+			sfx_play(snd_laser,,,.2);
 		},
 	
 	},
@@ -170,6 +175,7 @@ global.attacks = {
 		
 		attack: function(_id) {
 			fire_attack_repeated(x,y,obj_program.aimlines[0],,obj_attack_triple,_id,3,17);
+			//sound inside
 		},
 	
 	},
@@ -184,6 +190,8 @@ global.attacks = {
 		
 		attack: function(_id) {
 			fire_attack_repeated(x,y,obj_program.aimlines[0],,obj_attack_beam,_id,LASER_SEGMENTS);
+			sfx_play(snd_laser,,,.2);
+			
 		},
 	
 	},
@@ -198,6 +206,7 @@ global.attacks = {
 		
 		attack: function(_id) {
 			fire_attack_repeated(x,y,obj_program.aimlines[0],,obj_attack_beam,_id,LASER_SEGMENTS);
+			sfx_play(snd_laser,,,.2);
 		},
 	
 	},
@@ -215,7 +224,9 @@ global.attacks = {
 			var len = alen(obj_program.aimlines);
 			for(var i=0; i<len; i++) {
 				fire_attack(x,y,obj_program.aimlines[i]);
+				
 			}	
+			sfx_play(snd_shoot3,,,.2);
 		},
 	},
 
@@ -230,6 +241,7 @@ global.attacks = {
 		attack: function(_id) {
 			fire_attack_repeated(x,y,obj_program.aimlines[0],,obj_attack_beam,_id,LASER_SEGMENTS);
 			fire_attack_repeated(x,y,obj_program.aimlines[1],,obj_attack_beam,_id,LASER_SEGMENTS);
+			sfx_play(snd_laser,,,.2);
 		},
 	},
 	
@@ -299,6 +311,9 @@ function fire_attack(xf,yf,path,spd=1,obj=obj_attack,from=id) {
 function fire_attack_repeated(xf,yf,path,spd=1,obj=obj_attack,from=id,reps=LASER_SEGMENTS,period=1) {
 	var ts = time_source_create(time_source_game,period,time_source_units_frames,method(from,function(xf,yf,path,spd,obj,from){
 		fire_attack(xf,yf,path,spd,obj,from);
+		if obj==obj_attack_triple {
+			sfx_play(snd_shoot3,,,.2);
+		}
 	}),[xf,yf,path,spd,obj,from],reps);
 	time_source_start(ts);
 }
@@ -323,6 +338,8 @@ function hittable_hit(inst=id,dmg=1) {
 	with inst {
 		
 		fxobj_create(x,y,sp_fx_airhit,depth-20,1.5);
+		
+		sfx_play(snd_hitsound,,,.2);
 		
 		shakeamt = 5;
 	

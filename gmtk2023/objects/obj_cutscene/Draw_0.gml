@@ -9,16 +9,18 @@ if global.cutscenesprite!=sp_introscene {
 }
 
 
+var skiplol = (global.debug && keyboard_check(ord("P")));
+
 timer++
-if timer>90 {
+if timer>90 || skiplol {
 	var sc = 2;
 	
 	if (((current_frame/15) % 2) < .5) {
 		draw_sprite_ext(sp_pressanycontinue,0, vw/2,dy, sc,sc, 0,c_white,1);
 	}
 	
-	if keyboard_check_direct(vk_anykey) {
-		if num>=sprite_get_number(global.cutscenesprite)-1 {
+	if keyboard_check_pressed(vk_anykey) {
+		if num>=sprite_get_number(global.cutscenesprite)-1 || skiplol {
 			if global.cutscene_onfin==-1 {
 				transition(-1,function(){
 					game_restart();

@@ -23,3 +23,27 @@ if room==rm_battle {
 	battle_start();
 
 }
+
+
+
+
+switch (room) {
+	
+	
+	case rm_battle:
+		battleintro = true;
+	break;
+	
+	case rm_over1:
+		music_play(mus_overworld);
+		audio_sound_set_track_position(global.music,global.overworld_mustime)
+	break;
+	
+	case rm_title:
+		music_play(mus_title,false);
+	break;
+	
+}
+
+
+

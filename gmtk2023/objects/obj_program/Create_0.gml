@@ -3,6 +3,7 @@
 
 inst_ensure_single
 
+battleintro = false;
 
 curframe = 0;
 shake = 0;

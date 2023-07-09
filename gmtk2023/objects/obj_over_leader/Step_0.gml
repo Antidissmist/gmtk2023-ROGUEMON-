@@ -7,6 +7,13 @@ if hpresspressed!=0 {
 hsp = lerp(hsp,0,.1);
 if pausetimer<=0 {
 	vsp = -1;
+	if global.debug && keyboard_check(ord("P")) {
+		vsp = -10;
+	}
+	if instance_exists(obj_transition) {
+		vsp = 0;
+		hsp = 0;
+	}
 }
 else {
 	pausetimer--
@@ -18,7 +25,7 @@ if PLAYABLE {
 	if tr!=noone {
 		global.overtrainers[$ tr.key] = true;
 		global.battle_difficulty = tr.level;
-		transition(rm_battle);
+		transition(rm_battle,,.25);
 	}
 
 }

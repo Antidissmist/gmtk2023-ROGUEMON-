@@ -121,7 +121,11 @@ function draw_hpbar(xx,yy,hp,maxhp,maxwid=5,sc=2) {
 		/*if i==floor(hp) && frac(hp)!=0  {
 			draw_sprite_general(sp_healthpiece,0, 0,0,spw,sph*frac(hp), hbx+hx+hspc/2-xoff,hy-yoff, sc,sc, 0,c_white,c_white,c_white,c_white,1);
 		}*/
-		if i<hp {
+		var frc = frac(hp);
+		if i==floor(hp) && frc!=0 {
+			draw_sprite_ext(sp_healthpiece,0,hbx+hx+hspc/2,hy, sc*frc,sc*frc, 0,c_white,1);
+		}
+		else if i<hp {
 			draw_sprite_ext(sp_healthpiece,0,hbx+hx+hspc/2,hy, sc,sc, 0,c_white,1);
 		}
 	}
@@ -140,6 +144,19 @@ function dtext(x,y,str,scl=.125) {
 }
 function dtext_centered(x,y,str,scl=1) {
 	draw_center(1,1);
+	dtext(x,y,str,scl);
+	draw_center();
+}
+function dtext_center_outlined(x,y,str,scl=1) {
+	draw_center(1,1);
+	var c = draw_get_color();
+	dc(c_black);
+	var w = 1*scl;
+	dtext(x-w,y,str,scl);
+	dtext(x+w,y,str,scl);
+	dtext(x,y-w,str,scl);
+	dtext(x,y+w,str,scl);
+	dc(c);
 	dtext(x,y,str,scl);
 	draw_center();
 }

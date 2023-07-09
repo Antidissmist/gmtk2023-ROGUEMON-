@@ -1,5 +1,6 @@
 
 
+
 if global.debug {
 	if keyboard_check_pressed(ord("R")) {
 		game_restart();
@@ -9,8 +10,19 @@ if global.debug {
 	}
 }
 
+if keyboard_check(vk_control) && keyboard_check(ord("D")) && keyboard_check_pressed(ord("B")) {
+	global.debug = !global.debug;
+}
+
 
 if room==rm_battle {
+
+	if battleintro {
+		if !audio_is_playing(mus_battlestart) {
+			music_play(mus_battle)
+			battleintro = false;
+		}
+	}
 
 	var sx = random_range(-shake,shake);
 	var sy = random_range(-shake,shake);

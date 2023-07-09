@@ -21,6 +21,7 @@ function battle_endturn() {
 			with obj_monster_battle {
 				if ATTACK_TYPENAME!=ATTACK_TOLDNAME {
 					approval_adjust("defymove");
+					notice("defy","approval down",c_red);
 				}
 				actor_attack();
 			}
@@ -66,7 +67,9 @@ function battle_turnstart() {
 	}
 	with obj_enemy_battle {
 		if myhealth<=0 {
-			transition(rm_over1);
+			music_stop();
+			music_play(mus_victory,false);
+			transition(rm_over1,,.33);
 			return;
 		}
 	}

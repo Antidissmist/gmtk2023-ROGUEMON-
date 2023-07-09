@@ -10,7 +10,13 @@ if faceangle {
 moveable_endstep();
 
 if !object_in_room() || (!ATTACK_BOUNCES && place_meeting(x,y,obj_obstacle_battle)) {
-	approval_adjust("miss");
+	//if GAMETURN==1 {
+	if from==obj_monster_battle {
+		approval_adjust("miss");
+		if !struct_get(THINGSDONE,"defymove",false) {
+			notice("miss","approval down",c_red);
+		}
+	}
 	instance_destroy();
 }
 
