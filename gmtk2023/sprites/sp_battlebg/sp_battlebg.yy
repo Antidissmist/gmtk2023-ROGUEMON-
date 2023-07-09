@@ -68,7 +68,7 @@
   ],
   "nineSlice": null,
   "parent": {
-    "name": "overworld",
-    "path": "folders/Sprites/overworld.yy",
+    "name": "battle",
+    "path": "folders/Sprites/battle.yy",
   },
 }

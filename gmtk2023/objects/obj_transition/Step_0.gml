@@ -8,7 +8,9 @@ if !finished {
 		timer++
 		if timer>maxtime {
 			onhalfway();
-			room_goto(goesto);
+			if goesto!=-1 {
+				room_goto(goesto);
+			}
 			stage = 1;
 		}
 	}

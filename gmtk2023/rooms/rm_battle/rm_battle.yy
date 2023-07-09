@@ -25,6 +25,8 @@
             {"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","name":"","propertyId":{"name":"startperc","path":"objects/obj_transition/obj_transition.yy",},"objectId":{"name":"obj_transition","path":"objects/obj_transition/obj_transition.yy",},"value":".5",},
           ],"isDnd":false,"objectId":{"name":"obj_transition","path":"objects/obj_transition/obj_transition.yy",},"inheritCode":false,"hasCreationCode":false,"colour":4294967295,"rotation":0.0,"scaleX":1.0,"scaleY":1.0,"imageIndex":0,"imageSpeed":1.0,"inheritedItemId":null,"frozen":false,"ignore":false,"inheritItemSettings":false,"x":32.0,"y":-32.0,},
         {"resourceType":"GMRInstance","resourceVersion":"1.0","name":"inst_3325328","properties":[],"isDnd":false,"objectId":{"name":"obj_battle_drawabove","path":"objects/obj_battle_drawabove/obj_battle_drawabove.yy",},"inheritCode":false,"hasCreationCode":false,"colour":4294967295,"rotation":0.0,"scaleX":1.0,"scaleY":1.0,"imageIndex":0,"imageSpeed":1.0,"inheritedItemId":null,"frozen":false,"ignore":false,"inheritItemSettings":false,"x":80.0,"y":-32.0,},
+        {"resourceType":"GMRInstance","resourceVersion":"1.0","name":"inst_5A013263","properties":[],"isDnd":false,"objectId":{"name":"obj_endturn","path":"objects/obj_endturn/obj_endturn.yy",},"inheritCode":false,"hasCreationCode":false,"colour":4294967295,"rotation":0.0,"scaleX":1.0,"scaleY":1.0,"imageIndex":0,"imageSpeed":1.0,"inheritedItemId":null,"frozen":false,"ignore":true,"inheritItemSettings":false,"x":584.0,"y":317.0,},
+        {"resourceType":"GMRInstance","resourceVersion":"1.0","name":"inst_7786D4D7","properties":[],"isDnd":false,"objectId":{"name":"obj_movenow","path":"objects/obj_movenow/obj_movenow.yy",},"inheritCode":false,"hasCreationCode":false,"colour":4294967295,"rotation":0.0,"scaleX":1.0,"scaleY":1.0,"imageIndex":0,"imageSpeed":1.0,"inheritedItemId":null,"frozen":false,"ignore":false,"inheritItemSettings":false,"x":61.0,"y":49.0,},
       ],"visible":true,"depth":0,"userdefinedDepth":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"gridX":16,"gridY":16,"layers":[],"hierarchyFrozen":false,"effectEnabled":true,"effectType":null,"properties":[],},
     {"resourceType":"GMRAssetLayer","resourceVersion":"1.0","name":"frame","assets":[
         {"resourceType":"GMRSpriteGraphic","resourceVersion":"1.0","name":"graphic_AB41E8C","spriteId":{"name":"sp_battle_border2","path":"sprites/sp_battle_border2/sp_battle_border2.yy",},"headPosition":1.0,"rotation":0.0,"scaleX":12.53125,"scaleY":8.25,"animationSpeed":0.0,"colour":4294967295,"inheritedItemId":null,"frozen":false,"ignore":false,"inheritItemSettings":false,"x":320.0,"y":211.0,},
@@ -142,6 +144,8 @@
     {"name":"inst_5E5ABA45","path":"rooms/rm_battle/rm_battle.yy",},
     {"name":"inst_79505CC1","path":"rooms/rm_battle/rm_battle.yy",},
     {"name":"inst_7D1E40B3","path":"rooms/rm_battle/rm_battle.yy",},
+    {"name":"inst_5A013263","path":"rooms/rm_battle/rm_battle.yy",},
+    {"name":"inst_7786D4D7","path":"rooms/rm_battle/rm_battle.yy",},
   ],
   "inheritCreationOrder": false,
   "sequenceId": null,

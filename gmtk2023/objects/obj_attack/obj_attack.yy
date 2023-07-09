@@ -11,7 +11,10 @@
   "managed": true,
   "spriteMaskId": null,
   "persistent": false,
-  "parentObjectId": null,
+  "parentObjectId": {
+    "name": "obj_attack_default",
+    "path": "objects/obj_attack_default/obj_attack_default.yy",
+  },
   "physicsObject": false,
   "physicsSensor": false,
   "physicsShape": 0,

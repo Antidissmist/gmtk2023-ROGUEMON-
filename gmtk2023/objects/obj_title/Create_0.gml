@@ -2,5 +2,7 @@
 
 init();
 
-room_goto(rm_battle);
 
+if global.skiptitle {
+	room_goto(STARTROOM);
+}

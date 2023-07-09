@@ -22,8 +22,14 @@ function debugline(xx,yy,len=10,dir) {
 }
 
 
+/// @func lerp_angle(ang,targ,amt)
+function lerp_angle(a,targ,amt) {
+	return a+angle_difference(targ,a)*amt;
+}
+
 function do_nothing(){}
 function return_false(){return false;}
+function return_true(){return true;}
 
 
 function object_in_room(inst=id) {
@@ -67,4 +73,16 @@ function camera_target(xx,yy,roomedge=true) {
 	
 	camera_set_view_pos(CAM,tx,ty);
 	
+}
+
+
+function array_random(arr) {
+	var ind = irandom(alen(arr)-1);
+	return arr[ind];
+}
+
+
+
+function framestotime(fr) {
+	return string(floor(fr/60));
 }

@@ -12,6 +12,11 @@ if PLAYABLE {
 }
 
 
+if place_meeting(x,y,obj_over_gymdoor) {
+	transition_cutscene(sp_scene_badge);
+}
+
+
 movecollide();
 
 camera_target(bbox_midx,bbox_midy);

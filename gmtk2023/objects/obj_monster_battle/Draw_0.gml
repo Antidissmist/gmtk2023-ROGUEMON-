@@ -1,7 +1,0 @@
-
-
-
-drawlines();
-
-draw_self();
-

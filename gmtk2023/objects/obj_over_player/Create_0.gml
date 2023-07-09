@@ -2,7 +2,7 @@
 
 
 
-walkspeed = 1;
+walkspeed = 2;
 
 moveable_setup();
 

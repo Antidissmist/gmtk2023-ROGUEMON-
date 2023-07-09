@@ -1,22 +1,36 @@
 
 
 draw_sort_y();
-
-hsp = hpress*walkspeed;
-vsp = vpress*walkspeed;
+log(GAMETURN,obj_program.waiting)
+var canwalk = GAMETURN==1// || (GAMETURN==0 && obj_program.waiting);
+with obj_movenow {
+	image_index = !canwalk;
+}
+if canwalk {
+	hsp = hpress*walkspeed;
+	vsp = vpress*walkspeed;
+}
+else {
+	hsp = 0;
+	vsp = 0;
+}
 
 
 movecollide();
 
+
 if x!=xprev || y!=yprev {
-	aim();
+	side_aim();
 }
 
-
-if !global.button_hovered && mouse_l_pr {
-	aimx = mouse_x;
-	aimy = mouse_y;
-	aim();
+//aimlock = GAMETURN==1 || !PLAYABLE;
+if GAMETURN==0 && PLAYABLE {
+	
+	if !global.button_hovered /*&& mouse_l_pr*/ {
+		aimx = mouse_x;
+		aimy = mouse_y;
+		actor_aim();
+	}
 }
 
 

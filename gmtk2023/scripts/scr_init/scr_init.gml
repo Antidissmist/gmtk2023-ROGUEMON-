@@ -1,34 +1,90 @@
 
 
 
+global.debug = true;//
+global.skiptitle = false;//
+#macro STARTROOM rm_over1//
+
 global.vw_def = 640;
 global.vh_def = 360;
 global.guiscale = 4;
-global.textscale = 1;
+global.textscale = .5;
 global.paused = false;
 global.button_hovered = false;
 #macro PAUSED global.paused
-#macro PLAYABLE (!PAUSED && !instance_exists(obj_transition))
+#macro PLAYABLE (!PAUSED && !instance_exists(obj_transition) && !obj_program.waiting)
+#macro PRESSABLE (!PAUSED && !instance_exists(obj_transition))
 
 
-#macro APPROVAL_MAX 100
+#macro depth_ui (-(global.vh_def+50))
+
+#macro APPROVAL_MAX 50
+#macro approval_hitenemy 1
+#macro approval_killenemy 5
+#macro approval_hitleader -1
+#macro approval_impatience -1/400
+
+
+#macro LASER_SEGMENTS 30
+#macro LEADERHP_MAX 10
+#macro MONSTERHP_MAX 10
+
+#macro ENEMYHP_MAX 10
+
 function init() {
 	
+	randomize();
 	
+	draw_set_font(fnt_default);
 	
 	
 	global.playerstats = {
-		health: 100,
+		monsterhp: MONSTERHP_MAX,
+		leaderhp: LEADERHP_MAX,
 		approval: APPROVAL_MAX/2,
 		
 		inventory: [],
+		
+		battletimer: 0,
+		gameturn: 0,
+		
+		attacktype: "aimed",
+		piercing: false,
+		bouncing: false,
 	};
 	
 	
 }
+function battle_start() {
+	
+	PLAYERSTATS.battletimer = 0;
+	GAMETURN = 0;
+	PLAYERSTATS.monsterhp = MONSTERHP_MAX;
+	
+	obj_program.waiting = true;
+	obj_program.waitcheck = 90;
+	//battle_turnstart();
+	
+}
+#macro GAMETURN PLAYERSTATS.gameturn
 #macro PLAYERSTATS global.playerstats
 #macro APPROVAL PLAYERSTATS.approval
+#macro ATTACK_PIERCES PLAYERSTATS.piercing
+#macro ATTACK_BOUNCES PLAYERSTATS.bouncing
+#macro ATTACK_TYPE PLAYERSTATS.attacktype
 
+
+
+function approval_adjust(amt,factor=1) {
+	
+	amt *= factor;
+	
+	APPROVAL += amt;
+	
+	if amt<=1 {
+		//obj_approvalbar.shake(abs(amt));
+	}
+}
 
 #macro KEY_LEFT (keyboard_check(vk_left) || keyboard_check(ord("A")))
 #macro KEY_RIGHT (keyboard_check(vk_right) || keyboard_check(ord("D")))
@@ -73,14 +129,31 @@ global._instplacelist = ds_list_create(); //lol
 #macro instplace_list global._instplacelist
 
 
-function transition(rm) {
+function transition(rm,onhalf=do_nothing) {
 	if instance_exists(obj_transition) {
 		return noone;
 	}
 	var t = instance_create_depth(0,0,0,obj_transition,{ goesto: rm });
+	t.onhalfway = onhalf;
 	return t;
 }
+function transition_cutscene(spr) {
+	global.cutscenesprite = spr;
+	return transition(rm_cutscene);
+}
 
+function fxobj_create(xx,yy,spr,dep=0,sc=1,reps=1) {
+	return instance_create_depth(xx,yy,dep,obj_fx,{ 
+		sprite_index: spr, 
+		image_xscale: sc,
+		image_yscale: sc,
+		reps: reps,
+	});
+}
+
+function screenshake(amt=1) {
+	obj_program.shake = max(obj_program.shake,1);
+}
 
 
 
@@ -91,6 +164,7 @@ function moveable_setup() {
 	xprev = x;
 	yprev = y;
 	pathamt = 0;
+	pointnum = 0;
 	nocollide = 0;
 }
 function moveable_endstep() {
@@ -171,7 +245,19 @@ function movecollidebounce(func=place_solid) {
 }
 
 
-function move_path(p) {
+function path_point_meeting(xx,yy,path,rad=2,edges=true) {
+	var n = path_get_number(path);
+	var start = edges ? 0 : 1;
+	var fin = edges ? n : n-1;
+	for(var i=start; i<fin; i++) {
+		if point_in_circle(xx,yy,path_get_point_x(path,i),path_get_point_y(path,i),rad) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function move_path(p,onbounce=do_nothing) {
 	if !path_exists(p) {
 		return;
 	}
@@ -180,6 +266,9 @@ function move_path(p) {
 	x = path_get_x(p,pathamt);
 	y = path_get_y(p,pathamt);
 	
+	if path_point_meeting(x,y,p,2,false) {
+		onbounce(x,y);
+	}
 	
 	pathamt += spd/path_get_length(p);
 	
