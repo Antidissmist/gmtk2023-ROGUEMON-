@@ -7,9 +7,18 @@ grazealph = 1;
 moveable_setup();
 hittable_setup();
 
+onattack = function() {
+	sprite_index = sp_froglizard_attack;
+	image_index = 0;
+}
+
 onhit = function(dmg) {
+	var prevhp = PLAYERSTATS.monsterhp;
 	PLAYERSTATS.monsterhp -= dmg;
 	if PLAYERSTATS.monsterhp<=0 {
+		if prevhp>0 {
+			react(array_random(global.reactions.monsterdies));
+		}
 		battle_monster_dies();
 	}
 }

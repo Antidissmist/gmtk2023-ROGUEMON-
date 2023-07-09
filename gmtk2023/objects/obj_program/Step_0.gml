@@ -61,5 +61,5 @@ if room==rm_battle {
 }
 
 shake = lerp(shake,0,.2);
-
+curframe++
 

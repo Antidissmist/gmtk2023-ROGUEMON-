@@ -1,12 +1,19 @@
 
 
 
+sparr = [
+	sp_enemy1,
+	sp_enemy2,
+	sp_enemy3,
+	sp_enemy4,
+	sp_enemy5,
+];
 walkspeed = 1;
 
 moveable_setup();
 hittable_setup();
 
-maxhealth = ENEMYHP_MAX;
+maxhealth = enemyhp_get();
 myhealth = maxhealth;
 onhit = function(dmg) {
 	myhealth -= dmg;
@@ -23,9 +30,14 @@ get_health = function() {
 	return myhealth
 }
 get_maxhealth = function() {
-	return ENEMYHP_MAX
+	return enemyhp_get();
 }
 
+
+targx = x;
+targy = y;
+checktimer = 0;
+state = 0;
 
 
 get_enemy = function() {
@@ -36,3 +48,8 @@ get_enemy = function() {
 aimx = room_width/2;
 aimy = room_height/2;
 aimangle = 0;
+
+
+sprite_index = array_random(sparr);
+mask_index = sprite_index;
+image_speed = 1;

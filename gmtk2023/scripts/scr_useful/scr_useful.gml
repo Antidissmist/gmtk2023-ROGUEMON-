@@ -2,7 +2,9 @@
 
 
 
-
+function interval(frames) {
+	return (current_frame % frames)==0;
+}
 
 
 function struct_get(str,name,def=undefined) {

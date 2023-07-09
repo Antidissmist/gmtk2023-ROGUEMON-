@@ -19,8 +19,10 @@ function actor_attack(inst=id) {
 		return;
 	}
 	with inst {
+		onattack();
 		screenshake(screenshake_attack);
 		method(id,global.attacks[$ ATTACK_TYPE].attack)(id);
+		ysc = .2;
 	}
 }
 
@@ -54,6 +56,8 @@ function attack_aim_nochoice() {
 	aimangle = point_direction(x,y,tx,ty);
 }
 
+#macro QUICKATTACKRANGE 70
+#macro QUICKATTACKTIME 55
 
 global.attack_choices = [
 	{name: "Piercing Beam", type: "beam", pierce: true, bounce: true},
@@ -66,6 +70,7 @@ global.attack_choices = [
 	{name: "Curve Ball", type:"curveball"},
 	{name: "Triple Shot", type:"tripleshot"},
 	{name: "Scatter Bolt", type:"scatterbolt"},
+	{name: "Thunder Beam", type:"zigzag", pierce: true},
 ];
 
 
@@ -101,7 +106,7 @@ global.attacks = {
 		
 		aim: function(_id) {
 			attack_aim_choice();
-			array_push(obj_program.aimlines,field_raycast_path(x,y,aimangle,,_id,function(i,ang){
+			array_push(obj_program.aimlines,field_raycast_path(x,y,aimangle-45,,_id,function(i,ang){
 				if i%5==0 {
 					return ang+2;
 				}
@@ -122,7 +127,7 @@ global.attacks = {
 			array_push(obj_program.aimlines,field_raycast_path(x,y,aimangle,,_id,function(i,ang){
 				if i%10==0 {
 					random_set_seed(obj_program.turnseed+69+i);
-					var ret =  ang+random_range(-15,15);
+					var ret =  ang+random_range(-10,10);
 					//random_set_seed(random_get_seed()+1);
 					randomize();
 					return ret;
@@ -133,6 +138,25 @@ global.attacks = {
 		
 		attack: function(_id) {
 			fire_attack(x,y,obj_program.aimlines[0]);
+		},
+	
+	},
+	
+	zigzag: {
+		
+		aim: function(_id) {
+			attack_aim_choice();
+			array_push(obj_program.aimlines,field_raycast_path(x,y,aimangle+30,,_id,function(i,ang){
+				var dist = 50;
+				if i%dist==0 {
+					return ang + ((i%(dist*2)==0) ? -60 : 60);
+				}
+				return ang;
+			}))
+		},
+		
+		attack: function(_id) {
+			fire_attack_repeated(x,y,obj_program.aimlines[0],,obj_attack_beam,_id,LASER_SEGMENTS);
 		},
 	
 	},
@@ -250,6 +274,13 @@ global.reactions = {
 		"miss!?",
 		"not good enough!",
 	],
+	
+	monsterdies: [
+		"come on!!",
+		"disappointing..",
+		"loser!",
+		"wase of my time..",
+	],
 
 };
 
@@ -276,6 +307,7 @@ function fire_attack_repeated(xf,yf,path,spd=1,obj=obj_attack,from=id,reps=LASER
 
 function hittable_setup() {
 	onhit = do_nothing; //(dmg)
+	onattack = do_nothing; //animation
 	get_health = return_true;
 	get_maxhealth = return_true;
 	
@@ -285,6 +317,7 @@ function hittable_setup() {
 	hitglow = false;
 	
 	shakeamt = 0;
+	quickattacktimer = 0;
 }
 function hittable_hit(inst=id,dmg=1) {
 	with inst {

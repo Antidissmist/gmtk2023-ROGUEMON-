@@ -4,9 +4,12 @@
 inst_ensure_single
 
 
-
+curframe = 0;
 shake = 0;
 reaction = "";
+presstime = 0;
+flshake = 0;
+flxsc = 1;
 
 turnseed = random_range(-9999,9999);
 

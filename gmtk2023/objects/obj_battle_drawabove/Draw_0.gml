@@ -46,10 +46,11 @@ with obj_program {
 }
 
 
-with obj_hittable {
-	var yoff = sprite_get_yoffset(sprite_index);
-	draw_hpbar(bbox_midx,y-yoff-15,get_health(),get_maxhealth());
+if !instance_exists(obj_scene_throw) {
+	with obj_hittable {
+		var yoff = sprite_get_yoffset(sprite_index);
+		draw_hpbar(bbox_midx,y-yoff-15,get_health(),get_maxhealth());
+	}
 }
-
 
 

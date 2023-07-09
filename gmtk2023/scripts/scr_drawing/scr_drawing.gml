@@ -97,8 +97,12 @@ function draw_hpbar(xx,yy,hp,maxhp,maxwid=5,sc=2) {
 	
 	draw_healthbar( xx-w,yy-h,xx+w,yy+h, percent*100,c_black, col,col, 0,true,true );*/
 
-	var hspc = sprite_get_width(sp_healthpiece)*sc;
-	var vspc = sprite_get_height(sp_healthpiece)*sc;
+	var spw = sprite_get_width(sp_healthpiece);
+	var sph = sprite_get_height(sp_healthpiece);
+	var xoff = sprite_get_xoffset(sp_healthpiece)+1;
+	var yoff = sprite_get_yoffset(sp_healthpiece)+1;
+	var hspc = spw*sc;
+	var vspc = sph*sc;
 	
 	var w = hspc*maxwid;
 	var hbx = xx-w/2;
@@ -113,7 +117,13 @@ function draw_hpbar(xx,yy,hp,maxhp,maxwid=5,sc=2) {
 			hx = 0;
 			hy -= vspc;
 		}
-		draw_sprite_ext(sp_healthpiece,i>=hp,hbx+hx+hspc/2,hy, sc,sc, 0,c_white,1);
+		draw_sprite_ext(sp_healthpiece,1,hbx+hx+hspc/2,hy, sc,sc, 0,c_white,1);
+		/*if i==floor(hp) && frac(hp)!=0  {
+			draw_sprite_general(sp_healthpiece,0, 0,0,spw,sph*frac(hp), hbx+hx+hspc/2-xoff,hy-yoff, sc,sc, 0,c_white,c_white,c_white,c_white,1);
+		}*/
+		if i<hp {
+			draw_sprite_ext(sp_healthpiece,0,hbx+hx+hspc/2,hy, sc,sc, 0,c_white,1);
+		}
 	}
 	
 }

@@ -12,8 +12,8 @@ global.textscale = .5;
 global.paused = false;
 global.button_hovered = false;
 #macro PAUSED global.paused
-#macro PLAYABLE (!PAUSED && !instance_exists(obj_transition) && !obj_program.waiting)
-#macro PRESSABLE (!PAUSED && !instance_exists(obj_transition))
+#macro PLAYABLE (!PAUSED && !instance_exists(obj_scene_throw) && !instance_exists(obj_transition) && !obj_program.waiting)
+#macro PRESSABLE (!PAUSED && !instance_exists(obj_scene_throw) && !instance_exists(obj_transition))
 
 
 #macro depth_ui (-(global.vh_def+50))
@@ -31,7 +31,14 @@ global.button_hovered = false;
 #macro APPROVAL_MAX 6
 #macro LEADERHP_MAX 20
 #macro MONSTERHP_MAX 4
-#macro ENEMYHP_MAX 4
+function enemyhp_get() {
+	switch (global.battle_difficulty) {
+		case 1: return 4;
+		case 2: return 6;
+		case 3: return 8;
+	}
+	return 4;
+}
 
 function init() {
 	
@@ -39,6 +46,11 @@ function init() {
 	
 	draw_set_font(fnt_default);
 	
+	
+	global.battle_difficulty = 1;
+	global.overworld_x = undefined;
+	global.overworld_y = undefined;
+	global.overtrainers = {};
 	
 	global.playerstats = {
 		monsterhp: MONSTERHP_MAX,
@@ -133,11 +145,15 @@ function approval_apply() {
 	
 }
 
+#macro current_frame obj_program.curframe
 #macro KEY_LEFT (keyboard_check(vk_left) || keyboard_check(ord("A")))
+#macro KEY_LEFT_PRESSED (keyboard_check_pressed(vk_left) || keyboard_check_pressed(ord("A")))
 #macro KEY_RIGHT (keyboard_check(vk_right) || keyboard_check(ord("D")))
+#macro KEY_RIGHT_PRESSED (keyboard_check_pressed(vk_right) || keyboard_check_pressed(ord("D")))
 #macro KEY_UP (keyboard_check(vk_up) || keyboard_check(ord("W")))
 #macro KEY_DOWN (keyboard_check(vk_down) || keyboard_check(ord("S")))
 #macro hpress obj_program._hpress
+#macro hpresspressed obj_program._hpresspressed
 #macro vpress obj_program._vpress
 
 
@@ -188,8 +204,9 @@ function transition(rm,onhalf=do_nothing) {
 	t.onhalfway = onhalf;
 	return t;
 }
-function transition_cutscene(spr) {
+function transition_cutscene(spr,onfin=-1) {
 	global.cutscenesprite = spr;
+	global.cutscene_onfin = onfin;
 	return transition(rm_cutscene);
 }
 
@@ -318,7 +335,7 @@ function move_path(p,onbounce=do_nothing) {
 	x = path_get_x(p,pathamt);
 	y = path_get_y(p,pathamt);
 	
-	if path_point_meeting(x,y,p,2,false) {
+	if path_point_meeting(x,y,p,2,false) && collision_circle(x,y,4,obj_obstacle_battle,true,false) {
 		onbounce(x,y);
 	}
 	

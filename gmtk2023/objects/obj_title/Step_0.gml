@@ -10,7 +10,7 @@ image_angle = sin(current_time/1000+408)*8;
 
 
 if keyboard_check_pressed(vk_anykey) {
-	transition(STARTROOM);
+	transition_cutscene(sp_introscene,STARTROOM);
 }
 
 

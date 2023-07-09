@@ -3,8 +3,8 @@
   "resourceVersion": "1.0",
   "name": "obj_tree",
   "spriteId": {
-    "name": "sp_tree",
-    "path": "sprites/sp_tree/sp_tree.yy",
+    "name": "sp_over_tree",
+    "path": "sprites/sp_over_tree/sp_over_tree.yy",
   },
   "solid": false,
   "visible": true,
@@ -27,7 +27,9 @@
   "physicsStartAwake": true,
   "physicsKinematic": false,
   "physicsShapePoints": [],
-  "eventList": [],
+  "eventList": [
+    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,},
+  ],
   "properties": [],
   "overriddenProperties": [],
   "parent": {

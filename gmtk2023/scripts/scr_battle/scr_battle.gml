@@ -8,23 +8,27 @@ function battle_leader_dies() {
 	
 }
 function battle_monster_dies() {
-	
+	if GAMETURN==0 {
+		battle_endturn();
+	}
 }
 function battle_endturn() {
 	
 	
 	//player attack
-	if GAMETURN==0 {
-		with obj_monster_battle {
-			if ATTACK_TYPENAME!=ATTACK_TOLDNAME {
-				approval_adjust("defymove");
+	if ATTACK_TYPENAME!="" && ATTACK_TYPENAME!=-1 {
+		if GAMETURN==0 {
+			with obj_monster_battle {
+				if ATTACK_TYPENAME!=ATTACK_TOLDNAME {
+					approval_adjust("defymove");
+				}
+				actor_attack();
 			}
-			actor_attack();
 		}
-	}
-	else {
-		with obj_enemy_battle {
-			actor_attack();
+		else {
+			with obj_enemy_battle {
+				actor_attack();
+			}
 		}
 	}
 	
@@ -91,6 +95,8 @@ function battle_turnstart() {
 		if GAMETURN==1 {
 			ATTACK_TYPE = ATTACK_TOLD;
 			ATTACK_TYPENAME = ATTACK_TOLDNAME;
+			ATTACK_PIERCES = struct_get(choice,"pierce",false);
+			ATTACK_BOUNCES = struct_get(choice,"bounce",false);
 		}
 		
 		turnseed = random_range(-9999,9999);
