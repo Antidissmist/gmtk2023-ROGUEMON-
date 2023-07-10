@@ -1,3 +1,6 @@
-# gmtk2023
+# gmtk2023 (ROGUEMON)
 
-gameing
+featuring some crazy wacky code
+
+https://antidissmist.itch.io/roguemon
+
