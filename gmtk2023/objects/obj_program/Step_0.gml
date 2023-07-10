@@ -8,6 +8,12 @@ if global.debug {
 	if keyboard_check_pressed(ord("T")) {
 		GAMETURN = !GAMETURN
 	}
+	if keyboard_check_pressed(ord("M")) {
+		global.domusic = !global.domusic;
+		if audio_is_playing(global.music) {
+			audio_sound_gain(global.music,global.domusic,0);
+		}
+	}
 }
 
 if keyboard_check(vk_control) && keyboard_check(ord("D")) && keyboard_check_pressed(ord("B")) {

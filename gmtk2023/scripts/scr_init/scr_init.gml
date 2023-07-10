@@ -3,6 +3,7 @@
 
 global.debug = false;//
 global.skiptitle = false;//
+global.domusic = true;
 #macro STARTROOM rm_over1//rm_over1//
 
 global.vw_def = 640;
@@ -238,7 +239,7 @@ function transition(rm,onhalf=do_nothing,spdfac=1) {
 	
 	if rm==rm_battle {
 		music_stop();
-		sfx_play(mus_battlestart,false);
+		sfx_play(mus_battlestart,false,global.domusic);
 	}
 	return t;
 }
