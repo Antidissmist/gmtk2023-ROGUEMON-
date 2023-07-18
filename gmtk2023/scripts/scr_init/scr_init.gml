@@ -16,6 +16,9 @@ global.button_hovered = false;
 #macro PLAYABLE (!PAUSED && !instance_exists(obj_scene_throw) && !instance_exists(obj_transition) && !obj_program.waiting)
 #macro PRESSABLE (!PAUSED && !instance_exists(obj_scene_throw) && !instance_exists(obj_transition))
 
+#macro col_yellow #ffec27
+#macro col_red #ff004d
+#macro col_lime #00e436
 
 #macro depth_ui (-(global.vh_def+50))
 
@@ -108,8 +111,9 @@ function battle_start() {
 
 
 function react(str) {
-	//obj_program.reaction = str;
-	textbox_battle(str,0,60)
+	if PLAYERSTATS.leaderhp>0 {
+		textbox_battle(str,0,60)
+	}
 }
 
 function approval_adjust(name) {
@@ -257,6 +261,13 @@ function fxobj_create(xx,yy,spr,dep=0,sc=1,reps=1) {
 		reps: reps,
 	});
 }
+function fxobj_explode(xx,yy) {
+	var t = fxobj_create(xx,yy,sp_explosion_black,-500,random_range(.8,1.1));
+	t.image_angle = random_range(0,360);
+	screenshake(2);
+	sfx_play(snd_explosion,,,.15);
+	return t;
+}
 
 
 function screenshake(amt=1) {
@@ -381,6 +392,7 @@ function move_path(p,onbounce=do_nothing) {
 	pathamt += spd/path_get_length(p);
 	
 	if pathamt>1 {
+		onmiss();
 		instance_destroy();
 	}
 	

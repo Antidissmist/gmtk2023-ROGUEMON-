@@ -16,6 +16,7 @@ if room==rm_battle {
 			type = ch.type;
 			drawname = ch.name;
 			attackind = i;
+			recalc();
 		}
 	}
 

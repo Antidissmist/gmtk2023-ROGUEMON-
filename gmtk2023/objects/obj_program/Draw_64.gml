@@ -36,6 +36,7 @@ if global.debug {
 	dtext(ww,hh-i++*spc,"debug mode",1);
 	dtext(ww,hh-i++*spc,"ctrl+d+b to disable",1);
 	dtext(ww,hh-i++*spc,"M to toggle music",1);
+	dtext(ww,hh-i++*spc,"hold G to do 999 dmg",1);
 	dtext(ww,hh-i++*spc,"R to restart game",1);
 	dtext(ww,hh-i++*spc,"P to fast walk & skip intro",1);
 	

@@ -5,7 +5,7 @@ amt = 0;
 
 text = "";
 text2 = "";
-col = c_red;
+col = col_red;
 
 ytop = y+30;
 ybottom = y+60;

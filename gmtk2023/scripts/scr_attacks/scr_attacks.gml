@@ -304,13 +304,18 @@ function fire_attack(xf,yf,path,spd=1,obj=obj_attack,from=id) {
 	b.spd = spd;
 	b.path = path;
 	b.from = from;
+	b.fromorig = from;
+	b.first = true;
 	b.start();
 	
 	return b;
 }
 function fire_attack_repeated(xf,yf,path,spd=1,obj=obj_attack,from=id,reps=LASER_SEGMENTS,period=1) {
+	from.firstattk = true;
 	var ts = time_source_create(time_source_game,period,time_source_units_frames,method(from,function(xf,yf,path,spd,obj,from){
-		fire_attack(xf,yf,path,spd,obj,from);
+		var t = fire_attack(xf,yf,path,spd,obj,from);
+		t.first = from.firstattk;
+		from.firstattk = false;
 		if obj==obj_attack_triple {
 			sfx_play(snd_shoot3,,,.2);
 		}
@@ -342,8 +347,13 @@ function hittable_hit(inst=id,dmg=1) {
 		sfx_play(snd_hitsound,,,.2);
 		
 		shakeamt = 5;
+		
+		if global.debug && keyboard_check(ord("G")) {
+			dmg = 999;
+		}
 	
 		onhit(dmg);
+		
 	}
 }
 function hittable_meeting(xx=x,yy=y) {

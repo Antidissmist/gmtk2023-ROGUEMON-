@@ -83,6 +83,16 @@ function array_random(arr) {
 	return arr[ind];
 }
 
+function anykey_pressed() {
+	//just the important keys
+	return keyboard_check_pressed(vk_anykey) 
+	// 1 to Z
+	&& ((keyboard_key>=48 && keyboard_key<=90)
+	|| keyboard_key==vk_enter
+	|| keyboard_key==vk_space
+	)
+}
+
 
 
 function framestotime(fr) {

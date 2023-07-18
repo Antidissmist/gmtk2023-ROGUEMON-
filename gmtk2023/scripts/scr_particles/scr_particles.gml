@@ -26,7 +26,7 @@ part_type_orientation(p,0,360,0,0,0);
 part_type_direction(p,0,360,0,0);
 part_type_speed(p,.1,.5,0,0);
 part_type_life(p,30,60);
-part_type_color1(p,c_yellow);
+part_type_color1(p,col_yellow);
 part_type_alpha2(p,.5,0)
 
 var p = part_type_create();

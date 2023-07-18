@@ -1,6 +1,26 @@
 
 if active {
 	
+	//broken
+	if keyboard_check_pressed(ord("1")) && pressindex==0 {
+		selectme();
+	}
+	else if keyboard_check_pressed(ord("2")) && pressindex==1 {
+		selectme();
+	}
+	else if keyboard_check_pressed(ord("3")) && pressindex==2 {
+		selectme();
+	}
+	else if keyboard_check_pressed(ord("4")) && pressindex==3 {
+		selectme();
+	}
+	else if keyboard_check_pressed(ord("5")) && pressindex==4 {
+		selectme();
+	}
+	else if keyboard_check_pressed(ord("6")) && pressindex==5 {
+		selectme();
+	}
+	
 	while(place_meeting(x,y,obj_menuoption)) {
 		x += 10;
 	}
@@ -13,14 +33,7 @@ if active {
 		image_index = 1;
 	
 		if mouse_l_pr {
-			ATTACK_TYPE = type;
-			ATTACK_TYPENAME = drawname;
-			var choice = global.attack_choices[attackind];
-			ATTACK_PIERCES = struct_get(choice,"pierce",false);
-			ATTACK_BOUNCES = struct_get(choice,"bounce",false);
-			with obj_monster_battle {
-				actor_aim();
-			}
+			selectme();
 		}
 	}
 	
@@ -30,7 +43,7 @@ if active {
 
 }
 else {
-	x = 0;
+	x = 120;
 }
 
 visible = active;

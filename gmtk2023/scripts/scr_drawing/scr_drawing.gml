@@ -57,7 +57,7 @@ function draw_path_dotted(path,xx,yy,stepsize=7,alphfade=true) {
 			//draw_line_width_color(px,py,nx,ny,2,c_yellow,c_yellow);
 			var dist = point_distance(px,py,nx,ny)/2;
 			var ang = point_direction(px,py,nx,ny);
-			draw_sprite_ext(sp_line,0, px,py,dist,.75, ang, c_yellow,.75*(1-perc));
+			draw_sprite_ext(sp_line,0, px,py,dist,.75, ang, col_yellow,.75*(1-perc));
 		}
 		
 		px = nx;
@@ -81,7 +81,7 @@ function draw_shadow(circleme=false) {
 	
 	draw_sprite_ext(sp_circle,0, bbox_midx,bbox_bottom, w,w*.5, 0,c_black,.5);
 	if circleme {
-		draw_sprite_ext(sp_circle_ring,0, bbox_midx,bbox_bottom, w,w*.5, 0,c_yellow,1);
+		draw_sprite_ext(sp_circle_ring,0, bbox_midx,bbox_bottom, w,w*.5, 0,col_yellow,1);
 	}
 	
 	

@@ -1,7 +1,7 @@
 
 
 
-if keyboard_check_pressed(vk_anykey) {
+if anykey_pressed() {
 	if global.cutscene_onfin==-1 {
 		transition(-1,function(){
 			game_restart();

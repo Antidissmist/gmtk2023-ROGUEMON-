@@ -21,7 +21,7 @@ function battle_endturn() {
 			with obj_monster_battle {
 				if ATTACK_TYPENAME!=ATTACK_TOLDNAME {
 					approval_adjust("defymove");
-					notice("defy","approval down",c_red);
+					notice("defy","approval down",col_red);
 				}
 				actor_attack();
 			}
@@ -59,6 +59,8 @@ function battle_turnstart() {
 	if APPROVAL>=APPROVAL_MAX {
 		PLAYERSTATS.monsterhp = min(PLAYERSTATS.monsterhp+1,MONSTERHP_MAX);
 		APPROVAL = APPROVAL_MAX/2;
+		notice("healed","full approval",#ff77a8);
+		sfx_play(snd_heal);
 	}
 	
 	if PLAYERSTATS.leaderhp<=0 {
@@ -110,6 +112,7 @@ function battle_turnstart() {
 	
 	with obj_menuoption {
 		active = false;
+		pressindex = -1;
 	}
 	if GAMETURN==0 {
 		var options = 2;

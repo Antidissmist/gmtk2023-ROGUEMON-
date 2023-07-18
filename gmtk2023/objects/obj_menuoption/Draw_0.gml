@@ -6,15 +6,15 @@ var col = c_white;
 
 if ATTACK_TOLDNAME!="" {
 	if drawname==ATTACK_TOLDNAME {
-		col = c_lime;
+		col = #00e436;
 	}
 	else {
-		col = c_red;
+		col = #ff004d;
 	}
 }
 
 
 dc(col);
-dtext_centered(bbox_midx,bbox_midy,drawname,.5);
+dtext_centered(bbox_midx,bbox_midy,displayname,textscale);
 dc(c_white);
 

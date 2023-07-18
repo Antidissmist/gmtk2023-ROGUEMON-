@@ -12,8 +12,8 @@ if quickattacktimer {
 	y+random_range(-shakeamt,shakeamt),xsc,ysc,,,.75*(sin(current_time/30)*.5+.5));
 	gpu_set_fog(false,c_white,0,0);
 }
-else if hitglow {
-	gpu_set_fog(true,c_yellow,0,0);
+else if hitglow && !obj_program.waiting {
+	gpu_set_fog(true,col_yellow,0,0);
 	draw_self_ext(,,
 	x+random_range(-shakeamt,shakeamt),
 	y+random_range(-shakeamt,shakeamt),xsc,ysc,,,.75*(sin(current_time/120)*.5+.5));

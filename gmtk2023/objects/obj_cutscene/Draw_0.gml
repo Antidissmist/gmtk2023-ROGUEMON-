@@ -19,7 +19,7 @@ if timer>90 || skiplol {
 		draw_sprite_ext(sp_pressanycontinue,0, vw/2,dy, sc,sc, 0,c_white,1);
 	}
 	
-	if keyboard_check_pressed(vk_anykey) {
+	if anykey_pressed() || skiplol {
 		if num>=sprite_get_number(global.cutscenesprite)-1 || skiplol {
 			if global.cutscene_onfin==-1 {
 				transition(-1,function(){

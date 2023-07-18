@@ -10,13 +10,7 @@ if faceangle {
 moveable_endstep();
 
 if !object_in_room() || (!ATTACK_BOUNCES && place_meeting(x,y,obj_obstacle_battle)) {
-	//if GAMETURN==1 {
-	if from==obj_monster_battle {
-		approval_adjust("miss");
-		if !struct_get(THINGSDONE,"defymove",false) {
-			notice("miss","approval down",c_red);
-		}
-	}
+	onmiss();
 	instance_destroy();
 }
 
@@ -43,11 +37,17 @@ if hit!=noone {
 	
 	if canhit {
 		hittable_hit(hit,hitdmg);
+		var firsthit = false;
 		if !ATTACK_PIERCES {
+			firsthit = true;
 			instance_destroy();
 		}
-		else {
+		else if !objhit[$ hit.id] {
+			firsthit = true;
 			objhit[$ hit.id] = true;
+		}
+		if firsthit && first {
+			fxobj_explode(x,y)
 		}
 	}
 }
