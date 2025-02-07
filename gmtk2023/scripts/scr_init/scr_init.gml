@@ -80,6 +80,13 @@ function init() {
 	
 	
 }
+function restartgame() {
+	instance_destroy(obj_program);
+	//instance_destroy(all);
+	audio_stop_all();
+	//room_goto(rm_title);
+	game_restart();
+}
 function battle_start() {
 	
 	PLAYERSTATS.battletimer = 0;
@@ -132,7 +139,7 @@ function approval_apply() {
 	var grazed = struct_get(THINGSDONE,"grazed",false);
 	var miss = struct_get(THINGSDONE,"miss",false);
 	
-	log(THINGSDONE)
+	//log(THINGSDONE)
 	
 	var snd = -1;
 	if defymove {

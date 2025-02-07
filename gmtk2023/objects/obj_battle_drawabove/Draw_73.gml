@@ -1,6 +1,7 @@
 
 
-
-with obj_textbox_battle {
-	event_perform(ev_draw,0)
+if instance_exists(obj_textbox_battle) {
+	with obj_textbox_battle {
+		drawme();
+	}
 }

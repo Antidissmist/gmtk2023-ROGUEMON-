@@ -23,7 +23,7 @@ if timer>90 || skiplol {
 		if num>=sprite_get_number(global.cutscenesprite)-1 || skiplol {
 			if global.cutscene_onfin==-1 {
 				transition(-1,function(){
-					game_restart();
+					restartgame();
 				})
 			}
 			else {

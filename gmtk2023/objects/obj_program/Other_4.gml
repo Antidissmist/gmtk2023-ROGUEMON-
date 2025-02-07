@@ -27,7 +27,6 @@ if room==rm_battle {
 
 
 
-
 switch (room) {
 	
 	
@@ -37,7 +36,9 @@ switch (room) {
 	
 	case rm_over1:
 		music_play(mus_overworld);
-		audio_sound_set_track_position(global.music,global.overworld_mustime)
+		if audio_exists(global.music) {
+			audio_sound_set_track_position(global.music,global.overworld_mustime);
+		}
 	break;
 	
 	case rm_title:
